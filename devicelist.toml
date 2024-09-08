@@ -1,0 +1,13 @@
+[[USB]]
+name = "GigabyteRGBFusion2USBController"
+VID = 0x048D
+PID = 0x5702
+
+[[USB]]
+name = "DummyUSBController"
+VID = 0x0000
+PID = 0x0001
+
+[[I2C]]
+name = "DummyI2CController"
+Address = 0x68

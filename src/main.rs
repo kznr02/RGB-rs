@@ -1,4 +1,15 @@
 use clap::{arg, command, Parser, Subcommand, ValueEnum};
+use interface::usb::{get_all_usb_devices, get_exist_usb_devices};
+use parse::parse_toml_list;
+
+mod interface;
+mod controller;
+mod parse;
+
+struct Device {
+    name: String,
+    func: fn(),
+}
 
 #[derive(Parser, Debug)]
 #[command(version = "1.0")]
@@ -18,8 +29,8 @@ enum SubCommands {
     },
     Set {
         #[arg(short)]
-        device: String
-    }
+        device: String,
+    },
 }
 
 #[derive(Debug, ValueEnum, Clone)]
@@ -34,11 +45,15 @@ fn main() {
     match args.commands {
         SubCommands::Detect => {
             println!("You are in detect!");
-        },
-        SubCommands::Get{device, prop} => {
+            let usb_device_list = get_all_usb_devices();
+            println!("Now detect USB Devices");
+            let device_list = parse_toml_list("devicelist.toml");
+            let exist_usb_list = get_exist_usb_devices(&device_list);
+        }
+        SubCommands::Get { device, prop } => {
             println!("device name: {:?}", device)
-        },
-        SubCommands::Set{device} => {
+        }
+        SubCommands::Set { device } => {
             println!("device name: {:?}", device)
         }
     }
